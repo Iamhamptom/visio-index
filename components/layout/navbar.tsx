@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { BarChart3, Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { Search } from './search';
 
 const navLinks = [
   { href: '/charts', label: 'Charts' },
@@ -50,6 +51,9 @@ export function Navbar() {
               </Link>
             ))}
           </div>
+
+          {/* Search */}
+          <Search />
 
           {/* Mobile Toggle */}
           <button

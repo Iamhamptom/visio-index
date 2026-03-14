@@ -66,7 +66,7 @@ export default async function ChartDetailPage({ params }: Props) {
 
         {/* The Chart Table */}
         <div className="bg-surface rounded-xl border border-white/5 overflow-hidden">
-          <ChartTable entries={entries} />
+          <ChartTable entries={entries} weights={chart.scoring_weights} />
         </div>
       </main>
       <Footer />
