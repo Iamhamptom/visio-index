@@ -10,8 +10,8 @@ import { Search } from './search';
 const navLinks = [
   { href: '/charts', label: 'Charts' },
   { href: '/explore', label: 'Explore' },
+  { href: '/culture', label: 'Culture' },
   { href: '/compare', label: 'Compare' },
-  { href: '/editorial', label: 'Editorial' },
   { href: '/methodology', label: 'Methodology' },
   { href: '/africa', label: 'Africa AI' },
 ];

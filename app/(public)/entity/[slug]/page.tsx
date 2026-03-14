@@ -5,6 +5,10 @@ import { PositionBadge } from '@/components/charts/position-badge';
 import { ScoreRadar } from '@/components/charts/score-radar';
 import { ScoreBar } from '@/components/charts/score-bar';
 import { Sparkline } from '@/components/charts/sparkline';
+import { EthicsCard } from '@/components/culture/ethics-card';
+import { GenerationalChart } from '@/components/culture/generational-chart';
+import { ImpactView } from '@/components/culture/impact-view';
+import { getEthicsProfile, getGenerationalData, getImpactMap } from '@/lib/data/culture';
 import { getRankDelta, formatScore } from '@/lib/scoring/engine';
 import { notFound } from 'next/navigation';
 import { Globe, MapPin, Tag, ExternalLink, BarChart3, TrendingUp } from 'lucide-react';
@@ -36,6 +40,9 @@ export default async function EntityProfilePage({ params }: Props) {
 
   const scoreData = getScoreBreakdown(slug);
   const history = getScoreHistory(slug);
+  const ethicsProfile = getEthicsProfile(slug);
+  const genData = getGenerationalData(slug);
+  const impactData = getImpactMap(slug);
 
   // Find all chart appearances
   const appearances = Object.entries(staticChartEntries).flatMap(([chartSlug, entries]) =>
@@ -195,6 +202,24 @@ export default async function EntityProfilePage({ params }: Props) {
             </section>
           )}
         </div>
+
+        {/* Cultural Intelligence */}
+        {(ethicsProfile || genData || impactData) && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-10">
+            {ethicsProfile && (
+              <EthicsCard profile={ethicsProfile} entityName={entity.name} />
+            )}
+            {genData && (
+              <GenerationalChart data={genData} entityName={entity.name} />
+            )}
+          </div>
+        )}
+
+        {impactData && (
+          <div className="mb-10">
+            <ImpactView impact={impactData} entityName={entity.name} />
+          </div>
+        )}
 
         {/* Metadata Details */}
         {Object.keys(entity.metadata).length > 0 && (
