@@ -9,9 +9,8 @@ import { Search } from './search';
 
 const navLinks = [
   { href: '/charts', label: 'Charts' },
-  { href: '/charts/top-labs', label: 'Top Labs' },
-  { href: '/charts/top-models', label: 'Top Models' },
-  { href: '/charts/top-tools', label: 'Top Tools' },
+  { href: '/explore', label: 'Explore' },
+  { href: '/compare', label: 'Compare' },
   { href: '/editorial', label: 'Editorial' },
   { href: '/methodology', label: 'Methodology' },
   { href: '/africa', label: 'Africa AI' },

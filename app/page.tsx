@@ -4,6 +4,7 @@ import { Hero } from '@/components/home/hero';
 import { TrendingStrip } from '@/components/home/trending-strip';
 import { BiggestMovers } from '@/components/home/biggest-movers';
 import { ChartCard } from '@/components/charts/chart-card';
+import { StatsBar } from '@/components/analytics/stats-bar';
 import {
   getFeaturedCharts, getGenreCharts, getEntriesByChartSlug,
   getAllTrendingEntries, getBiggestMovers
@@ -23,6 +24,11 @@ export default function HomePage() {
       <main>
         <Hero />
         <TrendingStrip entries={trending} />
+
+        {/* Stats Dashboard */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+          <StatsBar />
+        </section>
 
         {/* Biggest Movers */}
         <BiggestMovers entries={movers} />
