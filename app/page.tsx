@@ -11,6 +11,7 @@ import {
   getAllTrendingEntries, getBiggestMovers, getScoreBreakdown,
   getScoreHistory, staticEntities, CHART_WEEKS,
 } from '@/lib/data/static-charts';
+import { getMovementNote } from '@/lib/data/chart-notes';
 import Link from 'next/link';
 import { ChevronRight, BarChart3, Brain, Globe, Shield, Users, TrendingUp, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -65,9 +66,12 @@ export default function HomePage() {
                   </Link>
                 )}
 
-                <p className="text-sm text-muted-foreground mt-3 leading-relaxed max-w-md">
-                  {numberOne?.entity?.description?.slice(0, 120)}...
-                </p>
+                {/* Editorial note — Billboard-style narrative */}
+                {numberOne?.entity && getMovementNote(numberOne.entity.slug) && (
+                  <p className="text-sm text-foreground/70 mt-3 leading-relaxed max-w-md italic">
+                    &ldquo;{getMovementNote(numberOne.entity.slug)}&rdquo;
+                  </p>
+                )}
 
                 {/* Score readout */}
                 <div className="flex items-end gap-8 mt-8">
@@ -132,23 +136,18 @@ export default function HomePage() {
 
                         <PositionBadge status={entry.status} delta={delta} />
 
-                        <div className="min-w-0 flex items-center gap-3">
+                        <div className="min-w-0 flex-1">
+                        <div className="flex items-center gap-3">
                           <span className="font-medium text-sm text-foreground group-hover:text-spice transition-colors truncate">
                             {entry.entity?.name}
                           </span>
                           <span className="text-[10px] text-muted-foreground hidden sm:inline">{entry.entity?.country}</span>
-                          {/* Inline score bars — visible, not hidden */}
-                          {scores && (
-                            <div className="hidden lg:flex items-center gap-[2px] ml-auto">
-                              {Object.values(scores.scores).map((v, i) => (
-                                <div
-                                  key={i}
-                                  className="w-[3px] rounded-full bg-spice/50"
-                                  style={{ height: `${v / 5}px`, opacity: 0.3 + (v / 140) }}
-                                  title={`${Object.keys(scores.scores)[i]}: ${v}`}
-                                />
-                              ))}
-                            </div>
+                        </div>
+                          {/* Editorial note — Billboard-style micro-narrative */}
+                          {entry.entity && getMovementNote(entry.entity.slug) && (
+                            <p className="text-[10px] text-muted-foreground line-clamp-1 hidden lg:block mt-0.5">
+                              {getMovementNote(entry.entity.slug)}
+                            </p>
                           )}
                         </div>
 
