@@ -20,8 +20,10 @@ function makeId(prefix: string, i: number) {
   return `${prefix}-${String(i).padStart(4, '0')}`;
 }
 
+import { allExpansionEntities } from './seed-expansion';
+
 // ── Entities ────────────────────────────────────────────────────────────
-const allEntityData = [...labEntities, ...modelEntities, ...toolEntities, ...creatorEntities];
+const allEntityData = [...labEntities, ...modelEntities, ...toolEntities, ...creatorEntities, ...allExpansionEntities];
 export const staticEntities: Entity[] = allEntityData.map((e, i) => ({
   ...e,
   id: makeId('entity', i),
