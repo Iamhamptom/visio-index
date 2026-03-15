@@ -46,6 +46,8 @@ export const ceoScores: ScoredRanking[] = [
   { slug: 'demis-hassabis', composite: 85.4, scores: { company_growth: 78, product_impact: 92, market_influence: 82, strategic_vision: 95, public_profile: 72 }, history: [82.0, 83.5, 84.5, 85.4] },
   { slug: 'alexandr-wang', composite: 82.7, scores: { company_growth: 90, product_impact: 78, market_influence: 75, strategic_vision: 85, public_profile: 72 }, history: [79.5, 80.8, 81.8, 82.7] },
   { slug: 'aravind-srinivas', composite: 81.3, scores: { company_growth: 92, product_impact: 82, market_influence: 72, strategic_vision: 78, public_profile: 75 }, history: [76.0, 78.0, 79.8, 81.3] },
+  { slug: 'elon-musk', composite: 87.8, scores: { company_growth: 95, product_impact: 82, market_influence: 98, strategic_vision: 78, public_profile: 99 }, history: [82.0, 84.5, 86.2, 87.8] },
+  { slug: 'david-holz', composite: 84.5, scores: { company_growth: 95, product_impact: 88, market_influence: 72, strategic_vision: 85, public_profile: 55 }, history: [80.0, 82.0, 83.5, 84.5] },
   { slug: 'emad-mostaque', composite: 68.5, scores: { company_growth: 45, product_impact: 70, market_influence: 78, strategic_vision: 72, public_profile: 80 }, history: [72.0, 70.5, 69.5, 68.5] },
 ];
 
@@ -63,6 +65,10 @@ export const scientistScores: ScoredRanking[] = [
   { slug: 'joy-buolamwini', composite: 81.2, scores: { breakthroughs: 72, citations: 75, real_world_impact: 92, mentorship: 78, public_engagement: 95 }, history: [80.0, 80.5, 80.8, 81.2] },
   { slug: 'jim-fan', composite: 79.8, scores: { breakthroughs: 82, citations: 72, real_world_impact: 78, mentorship: 70, public_engagement: 92 }, history: [77.0, 78.0, 79.0, 79.8] },
   { slug: 'jeremy-howard', composite: 78.5, scores: { breakthroughs: 85, citations: 78, real_world_impact: 80, mentorship: 95, public_engagement: 55 }, history: [78.0, 78.2, 78.3, 78.5] },
+  { slug: 'yoshua-bengio', composite: 97.1, scores: { breakthroughs: 99, citations: 99, real_world_impact: 95, mentorship: 98, public_engagement: 72 }, history: [96.8, 96.9, 97.0, 97.1] },
+  { slug: 'john-hopfield', composite: 90.5, scores: { breakthroughs: 95, citations: 88, real_world_impact: 92, mentorship: 85, public_engagement: 55 }, history: [88.0, 89.0, 90.0, 90.5] },
+  { slug: 'kaiming-he', composite: 89.2, scores: { breakthroughs: 95, citations: 95, real_world_impact: 90, mentorship: 72, public_engagement: 45 }, history: [88.5, 88.8, 89.0, 89.2] },
+  { slug: 'ian-goodfellow', composite: 87.8, scores: { breakthroughs: 98, citations: 90, real_world_impact: 88, mentorship: 70, public_engagement: 42 }, history: [87.5, 87.6, 87.7, 87.8] },
 ];
 
 // ── TEAM SCORES (using lab slugs) ───────────────────────────────────────
@@ -91,6 +97,12 @@ export const communityScores: ScoredRanking[] = [
   { slug: 'the-neuron', composite: 82.8, scores: { members: 82, engagement: 78, influence: 75, growth: 92, content_quality: 80 }, history: [79.5, 80.8, 81.8, 82.8] },
   { slug: 'latent-space-pod', composite: 80.5, scores: { members: 55, engagement: 85, influence: 88, growth: 82, content_quality: 95 }, history: [77.0, 78.5, 79.5, 80.5] },
   { slug: 'ai-engineer-summit', composite: 78.9, scores: { members: 52, engagement: 82, influence: 85, growth: 88, content_quality: 90 }, history: [74.5, 76.0, 77.5, 78.9] },
+  { slug: 'r-chatgpt', composite: 93.5, scores: { members: 98, engagement: 92, influence: 88, growth: 90, content_quality: 72 }, history: [91.0, 92.0, 93.0, 93.5] },
+  { slug: 'r-singularity', composite: 86.8, scores: { members: 88, engagement: 85, influence: 82, growth: 85, content_quality: 75 }, history: [84.5, 85.5, 86.2, 86.8] },
+  { slug: 'the-rundown-ai', composite: 91.2, scores: { members: 95, engagement: 88, influence: 88, growth: 95, content_quality: 82 }, history: [85.0, 87.5, 89.5, 91.2] },
+  { slug: 'superhuman-ai', composite: 85.5, scores: { members: 90, engagement: 82, influence: 78, growth: 88, content_quality: 80 }, history: [81.0, 83.0, 84.5, 85.5] },
+  { slug: 'deep-learning-indaba', composite: 76.3, scores: { members: 60, engagement: 78, influence: 82, growth: 80, content_quality: 92 }, history: [73.0, 74.5, 75.5, 76.3] },
+  { slug: 'zindi', composite: 74.1, scores: { members: 55, engagement: 75, influence: 72, growth: 82, content_quality: 85 }, history: [70.5, 72.0, 73.2, 74.1] },
 ];
 
 // ── CAMPAIGN SCORES ─────────────────────────────────────────────────────
@@ -109,13 +121,18 @@ export const campaignScores: ScoredRanking[] = [
   { slug: 'chatgpt', composite: 73.5, scores: { reach: 98, creativity: 55, conversion: 72, brand_impact: 75, virality: 60 }, history: [78.0, 76.5, 75.0, 73.5] },
 ];
 
-// Campaign editorial notes
+// Campaign editorial notes — enriched with real research data
 export const campaignNotes: Record<string, string> = {
-  'openai': 'ChatGPT\'s launch remains the most successful product launch in tech history. 100M users in 2 months. Every subsequent launch (GPT-4, Sora, o1) generates mainstream media coverage.',
-  'anthropic': '"Machines of Loving Grace" essay was the most-read AI thought piece of 2024. Claude\'s brand strategy — safety + capability — is winning developer trust without paid advertising.',
-  'deepseek': 'Zero marketing budget. R1\'s release crashed Nvidia\'s stock by $600B in one day. Open-source as guerrilla marketing. The most impactful "non-campaign" in AI history.',
-  'meta-ai': 'Llama open-source strategy = the most effective long-term brand play. Every download is a Meta ad. Zuckerberg\'s personal brand pivot to "open-source champion" was masterful.',
-  'cursor': 'Word-of-mouth only. No ads, no influencer deals. Cursor grew to 2M developers and $9B valuation purely through product quality. The anti-marketing marketing.',
-  'claude-code': 'Launched as a CLI in a world of GUIs. Grew through developer Twitter/X. "Vibe coding" became a meme. Organic virality through actual productivity gains.',
-  'suno': 'TikTok-native growth. Users share AI-generated songs as content. Every shared song is a Suno ad. 12M users from pure social virality.',
+  'openai': 'Super Bowl 2025: "The Intelligence Age" — first AI company Super Bowl ad, 120M viewers. Then GPT-4o Ghibli moment added 1M users in ONE HOUR. "Our GPUs are melting" — Sam Altman. 400M+ total users.',
+  'anthropic': 'Super Bowl 2026: "A Time and a Place" mocked ad-supported AI. Claude went from #41 to #7 on App Store overnight. 11% DAU jump. Revenue from $87M to $7B in 22 months. Safety-first brand strategy working.',
+  'deepseek': '$0 marketing budget. R1 crashed Nvidia by $589B in a single day — the largest stock loss in US history. Proved you don\'t need $100B to build frontier AI. The most impactful non-campaign ever.',
+  'meta-ai': 'Ray-Ban Meta AI Super Bowl ad (Hemsworth + Pratt) + Llama open-source strategy. Every Llama download is a Meta ad. 700M+ Meta AI users. Zuckerberg\'s $65B AI spend is the biggest bet in tech.',
+  'cursor': '$0 to $1B ARR in 24 months. Zero traditional marketing. Used by teams at Perplexity, Midjourney, Scale AI. Word-of-mouth only. The anti-marketing marketing masterclass.',
+  'midjourney-app': '$0 ad spend ever. $500M revenue. Profitable since month 8. 21M registered users. 26.8% market share in AI image gen. Built entirely through Discord community virality. No VC money.',
+  'perplexity-app': 'Samsung TV integration + Snapchat partnership (~1B MAU reach) + Airtel India drove 640% YoY growth. 780M queries/month. $148M ARR. Distribution deals as growth strategy.',
+  'claude-code': 'Terminal-first in a GUI world. "Vibe coding" became a meme on X. Grew through developer word-of-mouth. No ads, no influencer deals. Pure product-market fit virality.',
+  'google-deepmind': 'Google "New Home" Super Bowl ad ranked #1 most effective by Kellogg School. But "Dear Sydney" Olympics ad was pulled after backlash. Gemini at 650M MAU. 42% of digital ads use Gemini-generated copy.',
+  'suno': 'TikTok-native growth. Every shared AI song is a Suno ad. 12M+ users. Facing major label lawsuits but growing faster because of the controversy. Music industry\'s nightmare and fascination.',
+  'elevenlabs': 'Voice cloning went viral on TikTok. Celebrity voice recreations drove massive awareness. Now used by major studios. The "Midjourney of voice" positioning is working.',
+  'chatgpt': 'Announced ads in ChatGPT hours after Anthropic\'s anti-ad Super Bowl spot. 400M+ users makes it the largest AI audience for advertisers. Sam Altman got "exceptionally testy" over Claude\'s ads mocking.',
 };
