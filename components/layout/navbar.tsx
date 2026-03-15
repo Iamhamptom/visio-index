@@ -21,29 +21,32 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-white/5 bg-void/80 backdrop-blur-xl">
+    <nav className="sticky top-0 z-50 border-b border-spice/[0.06] bg-void/90 backdrop-blur-xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <BarChart3 className="h-6 w-6 text-electric group-hover:text-cyan transition-colors" />
-            <span className="font-heading font-bold text-lg tracking-tight">
-              <span className="text-electric">VISIO</span>
-              <span className="text-foreground"> INDEX</span>
+          <Link href="/" className="flex items-center gap-2.5 group">
+            <div className="relative">
+              <BarChart3 className="h-5 w-5 text-spice group-hover:text-spice-bright transition-colors" />
+              <div className="absolute -inset-1 rounded-full bg-spice/5 group-hover:bg-spice/10 transition-colors" />
+            </div>
+            <span className="font-heading font-bold text-sm tracking-[0.08em] uppercase">
+              <span className="holo-number">Visio</span>
+              <span className="text-foreground/80 ml-1">Index</span>
             </span>
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden md:flex items-center gap-0.5">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  'px-3 py-2 text-sm font-medium rounded-md transition-colors',
+                  'px-3 py-1.5 text-xs font-medium tracking-wide uppercase rounded-sm transition-all',
                   pathname === link.href || pathname.startsWith(link.href + '/')
-                    ? 'text-electric bg-electric/10'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-surface'
+                    ? 'text-spice bg-spice/8 border border-spice/15'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-surface border border-transparent'
                 )}
               >
                 {link.label}
@@ -51,30 +54,38 @@ export function Navbar() {
             ))}
           </div>
 
-          {/* Search */}
-          <Search />
+          <div className="flex items-center gap-3">
+            {/* Search */}
+            <Search />
 
-          {/* Mobile Toggle */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden p-2 text-muted-foreground hover:text-foreground"
-          >
-            {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
+            {/* Live indicator */}
+            <div className="hidden md:flex items-center gap-1.5 px-2 py-1 rounded-sm border border-spice/10">
+              <span className="w-1.5 h-1.5 rounded-full bg-rank-up animate-pulse" />
+              <span className="text-[10px] font-mono text-spice-dim uppercase tracking-wider">Live</span>
+            </div>
+
+            {/* Mobile Toggle */}
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="md:hidden p-2 text-muted-foreground hover:text-foreground"
+            >
+              {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Nav */}
         {mobileOpen && (
-          <div className="md:hidden pb-4 space-y-1">
+          <div className="md:hidden pb-4 space-y-1 border-t border-spice/5 pt-3">
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setMobileOpen(false)}
                 className={cn(
-                  'block px-3 py-2 text-sm font-medium rounded-md',
+                  'block px-3 py-2 text-sm font-medium rounded-sm',
                   pathname === link.href
-                    ? 'text-electric bg-electric/10'
+                    ? 'text-spice bg-spice/8'
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >

@@ -8,6 +8,7 @@ import { Sparkline } from '@/components/charts/sparkline';
 import { EthicsCard } from '@/components/culture/ethics-card';
 import { GenerationalChart } from '@/components/culture/generational-chart';
 import { ImpactView } from '@/components/culture/impact-view';
+import { MentatAnalysis } from '@/components/holo/mentat-analysis';
 import { getEthicsProfile, getGenerationalData, getImpactMap } from '@/lib/data/culture';
 import { getRankDelta, formatScore } from '@/lib/scoring/engine';
 import { notFound } from 'next/navigation';
@@ -201,6 +202,21 @@ export default async function EntityProfilePage({ params }: Props) {
               </div>
             </section>
           )}
+        </div>
+
+        {/* Mentat AI Analysis */}
+        <div className="mb-10">
+          <MentatAnalysis
+            entityName={entity.name}
+            entityType={entity.type}
+            scores={scoreData?.scores}
+            ethics={ethicsProfile ? {
+              transparency: ethicsProfile.transparency,
+              safety: ethicsProfile.safety_commitment,
+              privacy: ethicsProfile.data_privacy,
+              openness: ethicsProfile.openness,
+            } : undefined}
+          />
         </div>
 
         {/* Cultural Intelligence */}
