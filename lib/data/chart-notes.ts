@@ -33,6 +33,23 @@ export const movementNotes: Record<string, string> = {
   'andrej-karpathy': 'Untouchable at #1. Eureka Labs + YouTube series = the most trusted voice in AI education. Period.',
   'fireship': 'Holds #2. 3.2M subs and climbing. Makes complex AI accessible without dumbing it down.',
   'dario-amodei': 'Rises to #5. "Machines of Loving Grace" essay and Anthropic\'s capability surge raised his profile beyond safety circles.',
+
+  // CEOs
+  'jensen-huang': 'Untouchable at #1. $3.4T market cap. Every AI lab needs his GPUs. The leather jacket is the uniform of the AI era.',
+  'satya-nadella': 'The $13B bet on OpenAI made Microsoft the default enterprise AI stack. Copilot revenue is the fastest-growing in Microsoft history.',
+  'sundar-pichai': 'Falling behind despite Gemini 2.5 Pro being technically strong. Google\'s distribution should be winning — but developer preference says otherwise.',
+  'mark-zuckerberg': 'The open-source pivot is working. Llama 4 downloads in first week exceeded all previous releases combined. $65B AI spend is the biggest bet in tech.',
+  'alexandr-wang': 'Scale AI hit $1B ARR. Started the company at 19. Now the youngest self-made billionaire. Data is still the bottleneck of AI.',
+  'aravind-srinivas': 'Perplexity hit $9B valuation. Growing 20% month-over-month. The first real threat to Google Search in 25 years.',
+
+  // Scientists
+  'geoffrey-hinton': 'Nobel Prize 2024 confirmed what the field already knew — he\'s the most important computer scientist alive. Now spending his time warning about the risks.',
+  'yann-lecun': 'Still the loudest voice in the open-source AI debate. Meta\'s chief scientist and X\'s most combative AI thought leader.',
+  'fei-fei-li': 'World Labs hit $4.5B valuation. From ImageNet to spatial intelligence. Proving that fundamental research creates billion-dollar companies.',
+  'ilya-sutskever': 'Left OpenAI to build Safe Superintelligence Inc. The board coup hero. Now in stealth mode building what he believes is the most important thing ever.',
+  'francois-chollet': 'ARC benchmark became the standard test for "real" AI reasoning. Keras usage still growing. The quality-over-quantity researcher.',
+  'andrew-ng': '8M+ students taught. 150+ courses. The Batch newsletter. DeepLearning.AI courses are where the next generation of AI engineers are trained.',
+  'jim-fan': 'NVIDIA\'s robotics research is defining embodied AI. GR00T and Foundation Agent papers are shaping how we think about physical intelligence.',
 };
 
 // Special designations for the current week
@@ -62,6 +79,23 @@ export const chartDesignations: Record<string, ChartDesignation[]> = {
   'top-creators': [
     { slug: 'andrej-karpathy', badge: 'longest_run', label: 'LONGEST RUN AT #1' },
     { slug: 'dario-amodei', badge: 'biggest_gainer', label: 'BIGGEST GAINER' },
+  ],
+  'top-ceos': [
+    { slug: 'jensen-huang', badge: 'longest_run', label: '#1 FOR 12 MONTHS' },
+    { slug: 'dario-amodei', badge: 'biggest_gainer', label: 'BIGGEST GAINER' },
+    { slug: 'aravind-srinivas', badge: 'breakthrough', label: 'BREAKTHROUGH' },
+  ],
+  'top-scientists': [
+    { slug: 'geoffrey-hinton', badge: 'longest_run', label: 'LEGEND' },
+    { slug: 'fei-fei-li', badge: 'biggest_gainer', label: 'RISING' },
+  ],
+  'top-teams': [
+    { slug: 'anthropic', badge: 'biggest_gainer', label: '#1 TEAM' },
+    { slug: 'deepseek', badge: 'breakthrough', label: 'BREAKTHROUGH' },
+  ],
+  'top-campaigns': [
+    { slug: 'deepseek', badge: 'breakthrough', label: '$0 BUDGET, $600B IMPACT' },
+    { slug: 'claude-code', badge: 'biggest_gainer', label: 'ORGANIC VIRAL' },
   ],
 };
 

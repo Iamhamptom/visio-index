@@ -21,6 +21,10 @@ function makeId(prefix: string, i: number) {
 }
 
 import { allExpansionEntities } from './seed-expansion';
+import {
+  expandedChartDefs, ceoScores, scientistScores, teamScores,
+  communityScores, campaignScores,
+} from './expanded-charts';
 
 // ── Entities ────────────────────────────────────────────────────────────
 const allEntityData = [...labEntities, ...modelEntities, ...toolEntities, ...creatorEntities, ...allExpansionEntities];
@@ -34,7 +38,8 @@ export const staticEntities: Entity[] = allEntityData.map((e, i) => ({
 const entityBySlug = new Map(staticEntities.map((e) => [e.slug, e]));
 
 // ── Charts ──────────────────────────────────────────────────────────────
-export const staticCharts: Chart[] = chartDefinitions.map((c, i) => ({
+const allChartDefs = [...chartDefinitions, ...expandedChartDefs];
+export const staticCharts: Chart[] = allChartDefs.map((c, i) => ({
   ...c,
   id: makeId('chart', i),
   created_at: '2026-03-01T00:00:00Z',
@@ -70,6 +75,46 @@ function resolveEntries(
   });
 }
 
+// Build entries from ScoredRanking (for expanded charts without separate entry arrays)
+function buildFromScores(chartSlug: string, scores: ScoredRanking[]): ChartEntry[] {
+  const chart = chartBySlug.get(chartSlug);
+  const sorted = [...scores].sort((a, b) => b.composite - a.composite);
+
+  return sorted.map((s, i) => {
+    const entity = entityBySlug.get(s.slug);
+    const rank = i + 1;
+    const prevWeekScore = s.history.length >= 2 ? s.history[s.history.length - 2] : 0;
+    const prevSorted = [...scores].filter(sc => {
+      const ps = sc.history.length >= 2 ? sc.history[sc.history.length - 2] : 0;
+      return ps > 0;
+    }).sort((a, b) => (b.history[b.history.length - 2] || 0) - (a.history[a.history.length - 2] || 0));
+    const prevRank = prevSorted.findIndex(sc => sc.slug === s.slug) + 1 || null;
+
+    const isNew = prevWeekScore === 0;
+    const status: ChartEntry['status'] =
+      isNew ? 'new' :
+      prevRank === null ? 're_entry' :
+      rank < prevRank ? (prevRank - rank >= 5 ? 'hot_shot' : 'up') :
+      rank > prevRank ? 'down' : 'steady';
+
+    return {
+      id: makeId(`${chartSlug}-entry`, i),
+      chart_id: chart?.id ?? '',
+      entity_id: entity?.id ?? '',
+      week_start: '2026-03-09',
+      rank,
+      previous_rank: isNew ? null : prevRank,
+      peak_rank: Math.min(rank, prevRank ?? rank),
+      weeks_on_chart: Math.floor(Math.random() * 20) + 4,
+      composite_score: s.composite,
+      score_breakdown: s.scores,
+      status,
+      created_at: '2026-03-09T00:00:00Z',
+      entity,
+    };
+  });
+}
+
 // Build current-week entries for each chart, resolved to entities
 export const staticChartEntries: Record<string, ChartEntry[]> = {
   'top-labs': resolveEntries('top-labs', topLabsEntries, labScores),
@@ -79,6 +124,12 @@ export const staticChartEntries: Record<string, ChartEntry[]> = {
   'top-code-ai': resolveEntries('top-code-ai', topCodeAIEntries, codeAIScores),
   'top-creative-ai': resolveEntries('top-creative-ai', topCreativeAIEntries, creativeAIScores),
   'top-open-source': resolveEntries('top-open-source', topOpenSourceEntries, openSourceScores),
+  // Expanded charts
+  'top-ceos': buildFromScores('top-ceos', ceoScores),
+  'top-scientists': buildFromScores('top-scientists', scientistScores),
+  'top-teams': buildFromScores('top-teams', teamScores),
+  'top-communities': buildFromScores('top-communities', communityScores),
+  'top-campaigns': buildFromScores('top-campaigns', campaignScores),
 };
 
 // ── Historical data (4 weeks per chart) ─────────────────────────────────
@@ -126,7 +177,7 @@ export const chartHistory: Record<string, WeeklySnapshot[]> = {
 };
 
 // ── Score breakdown data (for radar charts, entity profiles) ────────────
-const allScoreData = [...labScores, ...modelScores, ...toolScores, ...creatorScores, ...codeAIScores, ...creativeAIScores, ...openSourceScores];
+const allScoreData = [...labScores, ...modelScores, ...toolScores, ...creatorScores, ...codeAIScores, ...creativeAIScores, ...openSourceScores, ...ceoScores, ...scientistScores, ...teamScores, ...communityScores, ...campaignScores];
 const scoreBySlug = new Map<string, ScoredRanking>();
 for (const s of allScoreData) {
   if (!scoreBySlug.has(s.slug)) {
@@ -161,6 +212,14 @@ export function getFeaturedCharts(): Chart[] {
 
 export function getGenreCharts(): Chart[] {
   return staticCharts.filter((c) => c.category === 'genre');
+}
+
+export function getPowerListCharts(): Chart[] {
+  return staticCharts.filter((c) => c.category === 'power_list');
+}
+
+export function getIndustryCharts(): Chart[] {
+  return staticCharts.filter((c) => c.category === 'industry');
 }
 
 export function getAllCharts(): Chart[] {
