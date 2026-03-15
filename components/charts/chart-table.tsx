@@ -3,13 +3,10 @@
 import { cn } from '@/lib/utils';
 import { PositionBadge } from './position-badge';
 import { Sparkline } from './sparkline';
-import { ScoreBar } from './score-bar';
 import { getRankDelta, formatScore } from '@/lib/scoring/engine';
-import { getScoreHistory } from '@/lib/data/static-charts';
+import { getScoreHistory, getScoreBreakdown } from '@/lib/data/static-charts';
 import type { ChartEntry } from '@/lib/supabase/types';
 import Link from 'next/link';
-import { useState } from 'react';
-import { ChevronDown, ChevronUp } from 'lucide-react';
 
 interface ChartTableProps {
   entries: ChartEntry[];
@@ -17,120 +14,122 @@ interface ChartTableProps {
 }
 
 export function ChartTable({ entries, weights }: ChartTableProps) {
-  const [expandedRank, setExpandedRank] = useState<number | null>(null);
+  // Get dimension names from first entry
+  const dimensions = entries[0]?.score_breakdown
+    ? Object.keys(entries[0].score_breakdown)
+    : [];
 
   return (
-    <div className="w-full">
-      {/* Header */}
-      <div className="grid grid-cols-[3rem_4.5rem_1fr_5rem_5rem_4rem] md:grid-cols-[3rem_4.5rem_1fr_5rem_5rem_4rem_4rem_4rem] items-center px-4 py-3 border-b border-white/5 text-xs text-muted-foreground uppercase tracking-wider">
-        <span>#</span>
-        <span>Move</span>
-        <span>Name</span>
-        <span className="text-right">Score</span>
-        <span className="text-right">Trend</span>
-        <span className="text-right">Peak</span>
-        <span className="text-right hidden md:block">Wks</span>
-        <span className="text-right hidden md:block"></span>
-      </div>
+    <div className="w-full overflow-x-auto">
+      <table className="w-full text-sm">
+        <thead>
+          <tr className="border-b border-spice/[0.06]">
+            <th className="text-left py-2.5 px-3 text-[10px] font-mono uppercase tracking-wider text-spice-dim w-10">#</th>
+            <th className="text-left py-2.5 px-2 text-[10px] font-mono uppercase tracking-wider text-spice-dim w-14">Move</th>
+            <th className="text-left py-2.5 px-3 text-[10px] font-mono uppercase tracking-wider text-spice-dim">Entity</th>
+            {/* Inline dimension columns — visible by default */}
+            {dimensions.slice(0, 5).map((dim) => (
+              <th key={dim} className="text-center py-2.5 px-1 text-[9px] font-mono uppercase tracking-wider text-spice-dim hidden lg:table-cell w-14">
+                {dim.replace(/_/g, ' ').slice(0, 6)}
+              </th>
+            ))}
+            <th className="text-center py-2.5 px-2 text-[10px] font-mono uppercase tracking-wider text-spice-dim w-12">Trend</th>
+            <th className="text-right py-2.5 px-3 text-[10px] font-mono uppercase tracking-wider text-spice w-16">Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {entries.map((entry) => {
+            const delta = getRankDelta(entry.rank, entry.previous_rank);
+            const history = entry.entity ? getScoreHistory(entry.entity.slug) : [];
 
-      {/* Rows */}
-      {entries.map((entry) => {
-        const delta = getRankDelta(entry.rank, entry.previous_rank);
-        const isTopThree = entry.rank <= 3;
-        const isExpanded = expandedRank === entry.rank;
-        const history = entry.entity ? getScoreHistory(entry.entity.slug) : [];
-        const breakdown = entry.score_breakdown && Object.keys(entry.score_breakdown).length > 0;
-
-        return (
-          <div key={entry.id || `${entry.rank}-${entry.entity?.slug}`}>
-            {/* Main Row */}
-            <div
-              className={cn(
-                'grid grid-cols-[3rem_4.5rem_1fr_5rem_5rem_4rem] md:grid-cols-[3rem_4.5rem_1fr_5rem_5rem_4rem_4rem_4rem] items-center px-4 py-3.5 border-b border-white/[0.03] transition-all hover:bg-surface/60 cursor-pointer',
-                isTopThree && 'bg-electric/[0.02]',
-                isExpanded && 'bg-surface/80'
-              )}
-              onClick={() => setExpandedRank(isExpanded ? null : entry.rank)}
-            >
-              {/* Rank */}
-              <span
+            return (
+              <tr
+                key={entry.id || entry.rank}
                 className={cn(
-                  'font-mono text-lg font-bold',
-                  entry.rank === 1 && 'text-electric text-glow-blue',
-                  entry.rank === 2 && 'text-cyan',
-                  entry.rank === 3 && 'text-rank-new',
-                  entry.rank > 3 && 'text-muted-foreground'
+                  'border-b border-spice/[0.02] transition-colors hover:bg-spice/[0.02] group',
+                  entry.rank <= 3 && 'bg-spice/[0.015]'
                 )}
               >
-                {String(entry.rank).padStart(2, '0')}
-              </span>
-
-              {/* Position Change */}
-              <PositionBadge status={entry.status} delta={delta} />
-
-              {/* Entity */}
-              {entry.entity ? (
-                <Link
-                  href={`/entity/${entry.entity.slug}`}
-                  className="group flex flex-col min-w-0"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <span className="font-heading font-semibold text-foreground group-hover:text-electric transition-colors truncate">
-                    {entry.entity.name}
+                {/* Rank */}
+                <td className="py-2.5 px-3">
+                  <span className={cn(
+                    'font-mono text-sm font-bold',
+                    entry.rank === 1 && 'holo-number text-base',
+                    entry.rank === 2 && 'text-spice/70',
+                    entry.rank === 3 && 'text-spice/50',
+                    entry.rank > 3 && 'text-muted-foreground'
+                  )}>
+                    {String(entry.rank).padStart(2, '0')}
                   </span>
-                  <span className="text-xs text-muted-foreground mt-0.5 truncate">
-                    {entry.entity.category}
-                    {entry.entity.country ? ` · ${entry.entity.country}` : ''}
+                </td>
+
+                {/* Movement */}
+                <td className="py-2.5 px-2">
+                  <PositionBadge status={entry.status} delta={delta} />
+                </td>
+
+                {/* Entity info — dense */}
+                <td className="py-2.5 px-3">
+                  {entry.entity ? (
+                    <Link href={`/entity/${entry.entity.slug}`} className="block min-w-0">
+                      <span className="font-medium text-foreground group-hover:text-spice transition-colors block truncate text-[13px]">
+                        {entry.entity.name}
+                      </span>
+                      <span className="text-[10px] text-muted-foreground block truncate">
+                        {entry.entity.category}{entry.entity.country ? ` · ${entry.entity.country}` : ''}
+                        {entry.weeks_on_chart > 1 ? ` · ${entry.weeks_on_chart}w` : ''}
+                        {entry.peak_rank < entry.rank ? ` · peak #${entry.peak_rank}` : ''}
+                      </span>
+                    </Link>
+                  ) : (
+                    <span className="text-muted-foreground">Unknown</span>
+                  )}
+                </td>
+
+                {/* Dimension score cells — colored intensity */}
+                {dimensions.slice(0, 5).map((dim) => {
+                  const val = entry.score_breakdown?.[dim] ?? 0;
+                  return (
+                    <td key={dim} className="py-2.5 px-1 text-center hidden lg:table-cell">
+                      <div className="relative">
+                        <div
+                          className="absolute inset-0 rounded-[2px]"
+                          style={{
+                            backgroundColor: `rgba(212, 168, 67, ${val / 300})`,
+                          }}
+                        />
+                        <span className={cn(
+                          'relative font-mono text-[11px] font-medium px-1 py-0.5',
+                          val >= 90 ? 'text-spice-bright' :
+                          val >= 70 ? 'text-foreground/80' :
+                          'text-muted-foreground'
+                        )}>
+                          {val}
+                        </span>
+                      </div>
+                    </td>
+                  );
+                })}
+
+                {/* Sparkline */}
+                <td className="py-2.5 px-2 text-center">
+                  <Sparkline data={history} height={18} width={44} color="#D4A843" />
+                </td>
+
+                {/* Composite Score */}
+                <td className="py-2.5 px-3 text-right">
+                  <span className={cn(
+                    'font-mono font-bold text-sm',
+                    entry.rank === 1 ? 'holo-number' : 'text-spice'
+                  )}>
+                    {formatScore(entry.composite_score)}
                   </span>
-                </Link>
-              ) : (
-                <span className="text-muted-foreground">Unknown</span>
-              )}
-
-              {/* Score */}
-              <span className="font-mono font-bold text-right text-foreground">
-                {formatScore(entry.composite_score)}
-              </span>
-
-              {/* Sparkline */}
-              <div className="flex justify-end">
-                <Sparkline data={history} height={24} width={64} />
-              </div>
-
-              {/* Peak */}
-              <span className="font-mono text-sm text-muted-foreground text-right">
-                #{entry.peak_rank}
-              </span>
-
-              {/* Weeks */}
-              <span className="font-mono text-sm text-muted-foreground text-right hidden md:block">
-                {entry.weeks_on_chart}
-              </span>
-
-              {/* Expand */}
-              <div className="hidden md:flex justify-end">
-                {breakdown ? (
-                  isExpanded
-                    ? <ChevronUp className="h-4 w-4 text-muted-foreground" />
-                    : <ChevronDown className="h-4 w-4 text-muted-foreground" />
-                ) : null}
-              </div>
-            </div>
-
-            {/* Expanded Score Breakdown */}
-            {isExpanded && breakdown && (
-              <div className="px-4 py-4 bg-surface/50 border-b border-white/[0.03]">
-                <div className="max-w-md ml-[7.5rem]">
-                  <p className="text-xs text-muted-foreground mb-3 font-medium uppercase tracking-wide">
-                    Score Breakdown
-                  </p>
-                  <ScoreBar scores={entry.score_breakdown} weights={weights} />
-                </div>
-              </div>
-            )}
-          </div>
-        );
-      })}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
     </div>
   );
 }

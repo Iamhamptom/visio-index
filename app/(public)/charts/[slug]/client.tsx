@@ -48,19 +48,16 @@ export function ChartDetailClient({ chart, entries, history }: ChartDetailClient
 
   return (
     <main className="max-w-7xl mx-auto px-4 sm:px-6 py-12">
-      {/* Chart Header */}
+      {/* Chart Header — tight */}
       <div className="mb-6">
-        <div className="flex items-center gap-2 text-sm text-muted-foreground mb-2">
-          <BarChart3 className="h-4 w-4 text-electric" />
-          <span className="capitalize">{chart.category} chart</span>
-          <span>&middot;</span>
-          <span className="capitalize">{chart.frequency}</span>
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-[10px] font-mono uppercase tracking-[0.15em] text-spice-dim">{chart.category} &middot; {chart.frequency}</span>
         </div>
-        <h1 className="font-heading font-bold text-3xl md:text-4xl text-foreground">
+        <h1 className="font-heading font-bold text-2xl md:text-3xl text-foreground">
           {chart.name}
         </h1>
         {chart.description && (
-          <p className="text-muted-foreground mt-2 max-w-2xl">{chart.description}</p>
+          <p className="text-xs text-muted-foreground mt-1.5 max-w-xl">{chart.description}</p>
         )}
       </div>
 
