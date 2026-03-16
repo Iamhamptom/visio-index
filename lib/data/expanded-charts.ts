@@ -29,6 +29,11 @@ export const expandedChartDefs: Omit<Chart, 'id' | 'created_at'>[] = [
     max_entries: 10, scoring_weights: { members: 0.25, engagement: 0.25, influence: 0.20, growth: 0.20, content_quality: 0.10 }, is_featured: false,
   },
   {
+    name: 'Top AI Investors', slug: 'top-investors', category: 'power_list', entity_type: 'lab',
+    frequency: 'quarterly', description: 'The most influential AI investors and accelerators. Who is funding the future of intelligence.',
+    max_entries: 8, scoring_weights: { portfolio_impact: 0.30, deal_flow: 0.25, fund_size: 0.20, returns: 0.15, ecosystem: 0.10 }, is_featured: false,
+  },
+  {
     name: 'Top AI Campaigns', slug: 'top-campaigns', category: 'industry', entity_type: 'lab',
     frequency: 'quarterly', description: 'The best AI marketing campaigns, product launches, and brand strategies. Who is winning the narrative war.',
     max_entries: 12, scoring_weights: { reach: 0.25, creativity: 0.20, conversion: 0.20, brand_impact: 0.20, virality: 0.15 }, is_featured: false,
@@ -136,3 +141,15 @@ export const campaignNotes: Record<string, string> = {
   'elevenlabs': 'Voice cloning went viral on TikTok. Celebrity voice recreations drove massive awareness. Now used by major studios. The "Midjourney of voice" positioning is working.',
   'chatgpt': 'Announced ads in ChatGPT hours after Anthropic\'s anti-ad Super Bowl spot. 400M+ users makes it the largest AI audience for advertisers. Sam Altman got "exceptionally testy" over Claude\'s ads mocking.',
 };
+
+// ── INVESTOR SCORES ─────────────────────────────────────────────────────
+export const investorScores: ScoredRanking[] = [
+  { slug: 'a16z', composite: 96.2, scores: { portfolio_impact: 98, deal_flow: 95, fund_size: 98, returns: 88, ecosystem: 95 }, history: [95.0, 95.5, 95.8, 96.2] },
+  { slug: 'sequoia', composite: 94.5, scores: { portfolio_impact: 98, deal_flow: 90, fund_size: 88, returns: 95, ecosystem: 92 }, history: [94.0, 94.2, 94.3, 94.5] },
+  { slug: 'thrive-capital', composite: 91.8, scores: { portfolio_impact: 92, deal_flow: 88, fund_size: 95, returns: 90, ecosystem: 82 }, history: [86.0, 88.5, 90.2, 91.8] },
+  { slug: 'lightspeed', composite: 89.2, scores: { portfolio_impact: 90, deal_flow: 88, fund_size: 92, returns: 85, ecosystem: 80 }, history: [87.0, 88.0, 88.8, 89.2] },
+  { slug: 'founders-fund', composite: 87.5, scores: { portfolio_impact: 92, deal_flow: 78, fund_size: 90, returns: 88, ecosystem: 78 }, history: [85.0, 86.0, 87.0, 87.5] },
+  { slug: 'y-combinator', composite: 93.8, scores: { portfolio_impact: 98, deal_flow: 98, fund_size: 72, returns: 95, ecosystem: 98 }, history: [93.0, 93.3, 93.5, 93.8] },
+  { slug: 'nvidia-inception', composite: 82.5, scores: { portfolio_impact: 78, deal_flow: 92, fund_size: 60, returns: 72, ecosystem: 95 }, history: [80.0, 81.0, 82.0, 82.5] },
+  { slug: 'antler', composite: 80.2, scores: { portfolio_impact: 72, deal_flow: 88, fund_size: 75, returns: 72, ecosystem: 85 }, history: [76.0, 78.0, 79.2, 80.2] },
+];

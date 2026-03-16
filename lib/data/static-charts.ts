@@ -22,9 +22,10 @@ function makeId(prefix: string, i: number) {
 
 import { allExpansionEntities } from './seed-expansion';
 import { allWave2Entities } from './seed-wave2';
+import { allWave3Entities } from './seed-wave3';
 import {
   expandedChartDefs, ceoScores, scientistScores, teamScores,
-  communityScores, campaignScores,
+  communityScores, campaignScores, investorScores,
 } from './expanded-charts';
 import {
   industryChartDefs, healthcareScores, financeScores, musicScores,
@@ -32,7 +33,7 @@ import {
 } from './industry-charts';
 
 // ── Entities ────────────────────────────────────────────────────────────
-const allEntityData = [...labEntities, ...modelEntities, ...toolEntities, ...creatorEntities, ...allExpansionEntities, ...allWave2Entities];
+const allEntityData = [...labEntities, ...modelEntities, ...toolEntities, ...creatorEntities, ...allExpansionEntities, ...allWave2Entities, ...allWave3Entities];
 export const staticEntities: Entity[] = allEntityData.map((e, i) => ({
   ...e,
   id: makeId('entity', i),
@@ -135,6 +136,7 @@ export const staticChartEntries: Record<string, ChartEntry[]> = {
   'top-teams': buildFromScores('top-teams', teamScores),
   'top-communities': buildFromScores('top-communities', communityScores),
   'top-campaigns': buildFromScores('top-campaigns', campaignScores),
+  'top-investors': buildFromScores('top-investors', investorScores),
   // Industry charts
   'ai-healthcare': buildFromScores('ai-healthcare', healthcareScores),
   'ai-finance': buildFromScores('ai-finance', financeScores),
@@ -188,7 +190,7 @@ export const chartHistory: Record<string, WeeklySnapshot[]> = {
 };
 
 // ── Score breakdown data (for radar charts, entity profiles) ────────────
-const allScoreData = [...labScores, ...modelScores, ...toolScores, ...creatorScores, ...codeAIScores, ...creativeAIScores, ...openSourceScores, ...ceoScores, ...scientistScores, ...teamScores, ...communityScores, ...campaignScores, ...healthcareScores, ...financeScores, ...musicScores, ...agentScores, ...hardwareScores];
+const allScoreData = [...labScores, ...modelScores, ...toolScores, ...creatorScores, ...codeAIScores, ...creativeAIScores, ...openSourceScores, ...ceoScores, ...scientistScores, ...teamScores, ...communityScores, ...campaignScores, ...investorScores, ...healthcareScores, ...financeScores, ...musicScores, ...agentScores, ...hardwareScores];
 const scoreBySlug = new Map<string, ScoredRanking>();
 for (const s of allScoreData) {
   if (!scoreBySlug.has(s.slug)) {
