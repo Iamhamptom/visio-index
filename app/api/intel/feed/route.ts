@@ -2,13 +2,16 @@ import { NextResponse } from 'next/server';
 import { getIntelFeed, checkIntelConnection } from '@/lib/intel/client';
 
 export async function GET() {
-  const connected = await checkIntelConnection();
+  const status = await checkIntelConnection();
 
-  if (!connected) {
+  if (!status.connected) {
     return NextResponse.json({
       connected: false,
       feed: [],
-      message: 'Visio Intel not connected. Set VISIO_INTEL_URL and VISIO_INTEL_API_KEY.',
+      reason: !process.env.VISIO_INTEL_SUPABASE_URL
+        ? 'VISIO_INTEL_SUPABASE_URL not set'
+        : 'VISIO_INTEL_SERVICE_KEY not set or connection failed',
+      fix: 'Set VISIO_INTEL_SUPABASE_URL and VISIO_INTEL_SERVICE_KEY on Vercel',
     });
   }
 
@@ -18,7 +21,11 @@ export async function GET() {
     connected: true,
     feed,
     count: feed.length,
-    source: 'Visio Intel',
+    db_stats: {
+      entities: status.entities,
+      signals: status.signals,
+      news: status.news,
+    },
     synced_at: new Date().toISOString(),
   });
 }

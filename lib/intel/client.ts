@@ -1,51 +1,20 @@
 /**
  * VISIO INTEL INTEGRATION CLIENT
  *
- * Connects The Visio Index to Visio Intel's intelligence platform.
- * Consumes: entities, market signals, news sentiment, scores, tenders.
+ * Direct Supabase connection to Visio Intel's database.
+ * No API proxy needed — direct DB access with service role key.
  *
  * Visio Intel Supabase: zgsgfghyreaptbpvlhdx (eu-central-1)
- * API: /api/v1/* with Bearer token auth
  */
 
-const INTEL_BASE_URL = process.env.VISIO_INTEL_URL || 'https://visiointel.visioai.co';
-const INTEL_API_KEY = process.env.VISIO_INTEL_API_KEY || '';
+import { createClient } from '@supabase/supabase-js';
 
-interface IntelResponse<T> {
-  data: T;
-  meta?: { total: number; page: number; per_page: number };
-}
+function getIntelClient() {
+  const url = process.env.VISIO_INTEL_SUPABASE_URL;
+  const key = process.env.VISIO_INTEL_SERVICE_KEY;
 
-async function intelFetch<T>(endpoint: string, params?: Record<string, string>): Promise<IntelResponse<T> | null> {
-  if (!INTEL_API_KEY) {
-    console.warn('[Visio Intel] No API key configured — using static data');
-    return null;
-  }
-
-  const url = new URL(`/api/v1${endpoint}`, INTEL_BASE_URL);
-  if (params) {
-    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-  }
-
-  try {
-    const res = await fetch(url.toString(), {
-      headers: {
-        'Authorization': `Bearer ${INTEL_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      next: { revalidate: 43200 }, // 12-hour cache
-    });
-
-    if (!res.ok) {
-      console.error(`[Visio Intel] ${res.status}: ${res.statusText}`);
-      return null;
-    }
-
-    return await res.json();
-  } catch (err) {
-    console.error('[Visio Intel] Fetch error:', err);
-    return null;
-  }
+  if (!url || !key) return null;
+  return createClient(url, key);
 }
 
 // ── ENTITY DATA ─────────────────────────────────────────────────────────
@@ -53,32 +22,40 @@ async function intelFetch<T>(endpoint: string, params?: Record<string, string>):
 export interface IntelEntity {
   id: string;
   legal_name: string;
-  trading_name?: string;
+  trading_name: string | null;
   entity_type: string;
   status: string;
-  province?: string;
-  city?: string;
-  country: string;
-  website_url?: string;
-  employee_count_est?: number;
-  revenue_band?: string;
-  overall_score?: number;
-  intent_score?: number;
-  score_breakdown?: Record<string, number>;
-  industry?: { name: string; code: string };
+  province: string | null;
+  city: string | null;
+  overall_score: number | null;
+  intent_score: number | null;
+  spend_potential: number | null;
+  industry: { name: string } | null;
 }
 
 export async function searchIntelEntities(query: string, limit = 10): Promise<IntelEntity[]> {
-  const res = await intelFetch<IntelEntity[]>('/entities', {
-    q: query,
-    per_page: String(limit),
-  });
-  return res?.data ?? [];
+  const client = getIntelClient();
+  if (!client) return [];
+
+  const { data } = await client
+    .from('legal_entities')
+    .select('id, legal_name, trading_name, entity_type, status, province, city, overall_score, intent_score, spend_potential, industry:industries(name)')
+    .or(`legal_name.ilike.%${query}%,trading_name.ilike.%${query}%`)
+    .order('overall_score', { ascending: false })
+    .limit(limit);
+
+  return (data as unknown as IntelEntity[]) ?? [];
 }
 
-export async function getIntelEntity(id: string): Promise<IntelEntity | null> {
-  const res = await intelFetch<IntelEntity>(`/entities/${id}`);
-  return res?.data ?? null;
+export async function getIntelEntityCount(): Promise<number> {
+  const client = getIntelClient();
+  if (!client) return 0;
+
+  const { count } = await client
+    .from('legal_entities')
+    .select('id', { count: 'exact', head: true });
+
+  return count ?? 0;
 }
 
 // ── MARKET SIGNALS ──────────────────────────────────────────────────────
@@ -91,15 +68,30 @@ export interface IntelSignal {
   title: string;
   description: string;
   detected_at: string;
-  entity_name?: string;
 }
 
 export async function getIntelSignals(limit = 20): Promise<IntelSignal[]> {
-  const res = await intelFetch<IntelSignal[]>('/signals', {
-    per_page: String(limit),
-    sort: 'detected_at:desc',
-  });
-  return res?.data ?? [];
+  const client = getIntelClient();
+  if (!client) return [];
+
+  const { data } = await client
+    .from('market_signals')
+    .select('id, entity_id, signal_type, signal_strength, title, description, detected_at')
+    .order('detected_at', { ascending: false })
+    .limit(limit);
+
+  return (data as IntelSignal[]) ?? [];
+}
+
+export async function getIntelSignalCount(): Promise<number> {
+  const client = getIntelClient();
+  if (!client) return 0;
+
+  const { count } = await client
+    .from('market_signals')
+    .select('id', { count: 'exact', head: true });
+
+  return count ?? 0;
 }
 
 // ── NEWS & SENTIMENT ────────────────────────────────────────────────────
@@ -113,33 +105,30 @@ export interface IntelNews {
   category: string;
   sentiment_score: number;
   sentiment_label: string;
-  entity_mentions: string[];
 }
 
 export async function getIntelNews(limit = 10): Promise<IntelNews[]> {
-  const res = await intelFetch<IntelNews[]>('/news', {
-    per_page: String(limit),
-    sort: 'published_at:desc',
-  });
-  return res?.data ?? [];
+  const client = getIntelClient();
+  if (!client) return [];
+
+  const { data } = await client
+    .from('news_articles')
+    .select('id, title, summary, source_name, published_at, category, sentiment_score, sentiment_label')
+    .order('published_at', { ascending: false })
+    .limit(limit);
+
+  return (data as IntelNews[]) ?? [];
 }
 
-// ── SCORES ──────────────────────────────────────────────────────────────
+export async function getIntelNewsCount(): Promise<number> {
+  const client = getIntelClient();
+  if (!client) return 0;
 
-export interface IntelScore {
-  entity_id: string;
-  procurement_intent: number;
-  growth_signals: number;
-  technographic_fit: number;
-  ability_to_pay: number;
-  risk_quality: number;
-  overall_score: number;
-  scored_at: string;
-}
+  const { count } = await client
+    .from('news_articles')
+    .select('id', { count: 'exact', head: true });
 
-export async function getIntelScore(entityId: string): Promise<IntelScore | null> {
-  const res = await intelFetch<IntelScore>(`/scores/${entityId}`);
-  return res?.data ?? null;
+  return count ?? 0;
 }
 
 // ── TENDERS ─────────────────────────────────────────────────────────────
@@ -152,48 +141,49 @@ export interface IntelTender {
   tender_value_zar: number;
   submission_deadline: string;
   tender_province: string;
-  is_ict: boolean;
 }
 
 export async function getIntelTenders(limit = 10): Promise<IntelTender[]> {
-  const res = await intelFetch<IntelTender[]>('/tenders', {
-    per_page: String(limit),
-    status: 'active',
-  });
-  return res?.data ?? [];
+  const client = getIntelClient();
+  if (!client) return [];
+
+  const { data } = await client
+    .from('procurement_releases')
+    .select('id, tender_title, buyer_name, tender_status, tender_value_zar, submission_deadline, tender_province')
+    .eq('tender_status', 'active')
+    .order('submission_deadline', { ascending: true })
+    .limit(limit);
+
+  return (data as IntelTender[]) ?? [];
 }
 
-// ── DUE DILIGENCE ───────────────────────────────────────────────────────
+// ── CONNECTION STATUS ───────────────────────────────────────────────────
 
-export interface IntelDueDiligence {
-  entity_id: string;
-  executive_summary: string;
-  full_report: string;
-  score_breakdown: Record<string, number>;
-  status: string;
-}
+export async function checkIntelConnection(): Promise<{
+  connected: boolean;
+  entities: number;
+  signals: number;
+  news: number;
+}> {
+  const client = getIntelClient();
+  if (!client) {
+    return { connected: false, entities: 0, signals: 0, news: 0 };
+  }
 
-export async function getIntelDueDiligence(entityId: string): Promise<IntelDueDiligence | null> {
-  const res = await intelFetch<IntelDueDiligence>(`/due-diligence/${entityId}`);
-  return res?.data ?? null;
-}
-
-// ── HEALTH CHECK ────────────────────────────────────────────────────────
-
-export async function checkIntelConnection(): Promise<boolean> {
-  if (!INTEL_API_KEY) return false;
   try {
-    const res = await fetch(`${INTEL_BASE_URL}/api/v1/entities?per_page=1`, {
-      headers: { 'Authorization': `Bearer ${INTEL_API_KEY}` },
-    });
-    return res.ok;
+    const [entities, signals, news] = await Promise.all([
+      getIntelEntityCount(),
+      getIntelSignalCount(),
+      getIntelNewsCount(),
+    ]);
+
+    return { connected: true, entities, signals, news };
   } catch {
-    return false;
+    return { connected: false, entities: 0, signals: 0, news: 0 };
   }
 }
 
 // ── FEED AGGREGATOR ─────────────────────────────────────────────────────
-// Combines signals, news, and scores into a unified feed for The Visio Index
 
 export interface IntelFeedItem {
   type: 'signal' | 'news' | 'tender';
@@ -202,7 +192,6 @@ export interface IntelFeedItem {
   source: string;
   timestamp: string;
   sentiment?: number;
-  entity_name?: string;
   data?: Record<string, string>;
 }
 
@@ -218,9 +207,8 @@ export async function getIntelFeed(limit = 20): Promise<IntelFeedItem[]> {
       type: 'signal' as const,
       title: s.title,
       body: s.description,
-      source: 'Visio Intel Signal',
+      source: `Visio Intel — ${s.signal_type}`,
       timestamp: s.detected_at,
-      entity_name: s.entity_name,
     })),
     ...news.map((n) => ({
       type: 'news' as const,
@@ -234,11 +222,13 @@ export async function getIntelFeed(limit = 20): Promise<IntelFeedItem[]> {
       type: 'tender' as const,
       title: t.tender_title,
       body: `${t.buyer_name} — R${(t.tender_value_zar / 1000000).toFixed(1)}M`,
-      source: 'SA Government Procurement',
+      source: 'SA Government',
       timestamp: t.submission_deadline,
       data: { province: t.tender_province, value: `R${(t.tender_value_zar / 1000000).toFixed(1)}M` },
     })),
   ];
 
-  return feed.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()).slice(0, limit);
+  return feed
+    .sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime())
+    .slice(0, limit);
 }
