@@ -248,9 +248,105 @@ export const liveInsights: Insight[] = [
     ],
     published_at: '2026-03-03',
   },
+
+  // ── MARCH 16 FRESH INTEL ───────────────────────────────────────────────
+  {
+    id: 'insight-015',
+    title: 'NVIDIA GTC 2026 keynote TODAY — Rubin GPU architecture expected',
+    body: 'Jensen Huang takes the stage at GTC 2026 in San Jose (30,000+ attendees). Expected announcements: Rubin GPU architecture (288GB HBM4, 5x dense FP performance), inference-optimized processor, NemoClaw open-source enterprise agent platform. Alphabet and Microsoft committed $320B+ combined 2026 CapEx on AI infrastructure. The hardware arms race is intensifying.',
+    category: 'market',
+    severity: 'breaking',
+    related_entities: ['nvidia', 'jensen-huang', 'amd-ai', 'cerebras', 'tenstorrent'],
+    related_charts: ['ai-hardware', 'top-ceos'],
+    data_points: [
+      { label: 'GTC attendees', value: '30,000+', delta: '' },
+      { label: 'Expected: Rubin', value: '288GB HBM4', delta: '5x FP performance' },
+      { label: 'Alphabet CapEx', value: '$180B (2026)', delta: '+98%' },
+      { label: 'Microsoft CapEx', value: '$140B+ (2026)', delta: '+59%' },
+    ],
+    published_at: '2026-03-16',
+  },
+  {
+    id: 'insight-016',
+    title: 'GPT-5.4 released with native computer use — OpenAI fights back',
+    body: 'OpenAI released GPT-5.4 on March 5 with native computer use, tool search, and 1M token context. GPT-5.1 was deprecated just 6 days later. The model release cadence is accelerating — OpenAI shipped 3 models in March alone. Meanwhile Claude Opus 4.6 holds #1 on LMSYS Arena at 1504 Elo. The frontier is a knife fight.',
+    category: 'model',
+    severity: 'breaking',
+    related_entities: ['openai', 'gpt-5-4', 'claude-opus-4-6', 'gemini-3-1-pro', 'grok-4-20'],
+    related_charts: ['top-models', 'top-labs'],
+    data_points: [
+      { label: 'LMSYS #1', value: 'Claude Opus 4.6', delta: '1504 Elo' },
+      { label: 'LMSYS #2', value: 'Gemini 3.1 Pro', delta: '1500 Elo' },
+      { label: 'LMSYS #4', value: 'Grok 4.20', delta: '1493 Elo' },
+      { label: 'GPT-5.4', value: '1M context', delta: 'Computer use' },
+    ],
+    published_at: '2026-03-16',
+  },
+  {
+    id: 'insight-017',
+    title: 'OpenEvidence hits 1M doctor consultations in a single day',
+    body: 'OpenEvidence — "ChatGPT for Doctors" — achieved 1 million clinical consultations in a single day on March 10. Used by 40%+ of US physicians across 10,000+ hospitals. $12B valuation after $250M Series D. This is what healthcare AI actually looks like: not replacing doctors, but augmenting every clinical decision in real-time.',
+    category: 'product',
+    severity: 'breaking',
+    related_entities: ['openevidence', 'hippocratic-ai', 'google-deepmind'],
+    related_charts: ['ai-healthcare'],
+    data_points: [
+      { label: 'Daily consults', value: '1M', delta: 'Historic first' },
+      { label: 'US physicians', value: '40%+', delta: '' },
+      { label: 'Valuation', value: '$12B', delta: 'Doubled' },
+      { label: 'Hospitals', value: '10,000+', delta: '' },
+    ],
+    published_at: '2026-03-16',
+  },
+  {
+    id: 'insight-018',
+    title: 'Higgsfield AI: $200M ARR in under 9 months — video AI unicorn',
+    body: 'Higgsfield AI reached $200M ARR and $1.3B valuation with 15M users generating 4.5M videos per day. From zero to unicorn in under 9 months. Backed by Accel and Menlo Ventures. Meanwhile Kling 3.0 shipped native 4K at 60fps, and Veo 3.1 added native audio. AI video is now broadcast-quality.',
+    category: 'product',
+    severity: 'shift',
+    related_entities: ['higgsfield', 'kling-3-0', 'veo-3-1', 'sora', 'pika', 'luma-ai'],
+    related_charts: ['top-creative-ai'],
+    data_points: [
+      { label: 'Higgsfield ARR', value: '$200M', delta: 'In <9 months' },
+      { label: 'Users', value: '15M', delta: '' },
+      { label: 'Kling 3.0', value: '4K 60fps', delta: 'Broadcast quality' },
+      { label: 'Video gens/day', value: '4.5M', delta: '' },
+    ],
+    published_at: '2026-03-16',
+  },
+  {
+    id: 'insight-019',
+    title: 'OpenAI-DoD deal triggers #QuitGPT — 2.5M supporters, uninstalls surge 295%',
+    body: 'OpenAI\'s agreement to deploy AI on classified DoD networks triggered the #QuitGPT movement with 2.5M+ supporters. ChatGPT uninstalls surged 295% overnight. Meanwhile Anthropic is suing the DoD after being labeled a "supply-chain risk." The AI industry\'s relationship with defense is fracturing along predictable lines: OpenAI embraces, Anthropic resists.',
+    category: 'safety',
+    severity: 'shift',
+    related_entities: ['openai', 'anthropic', 'chatgpt', 'claude-app', 'sam-altman', 'dario-amodei'],
+    related_charts: ['top-labs', 'top-tools'],
+    data_points: [
+      { label: '#QuitGPT', value: '2.5M+ supporters', delta: '' },
+      { label: 'Uninstalls', value: '+295%', delta: 'Overnight' },
+      { label: 'Anthropic', value: 'Suing DoD', delta: 'Filed in CA + DC' },
+    ],
+    published_at: '2026-03-15',
+  },
+  {
+    id: 'insight-020',
+    title: 'OpenAI reaches $110B raise at $840B — largest private venture round in history',
+    body: 'OpenAI closed a $110B round at $840B post-money valuation — the largest private venture deal ever. Amazon committed $50B. IPO planned at up to $1T valuation. In the same month, Anthropic closed $30B at $380B (second-largest ever). February 2026 was the biggest startup funding month in history at $189B.',
+    category: 'funding',
+    severity: 'breaking',
+    related_entities: ['openai', 'anthropic', 'sam-altman', 'dario-amodei'],
+    related_charts: ['top-labs', 'top-investors'],
+    data_points: [
+      { label: 'OpenAI round', value: '$110B', delta: 'Largest ever' },
+      { label: 'Valuation', value: '$840B', delta: 'IPO target $1T' },
+      { label: 'Amazon', value: '$50B committed', delta: '' },
+      { label: 'Feb 2026 total', value: '$189B', delta: 'Biggest month ever' },
+    ],
+    published_at: '2026-03-14',
+  },
 ];
 
-// ── INSIGHT HELPERS ─────────────────────────────────────────────────────
 const severityOrder = { breaking: 0, shift: 1, trend: 2, signal: 3 };
 
 export function getLatestInsights(count = 5): Insight[] {
