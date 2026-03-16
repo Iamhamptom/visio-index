@@ -202,6 +202,36 @@ export default function LivePage() {
           </div>
         </div>
 
+        {/* Intel Feed Status */}
+        <section className="mt-8 p-4 rounded-sm border border-cyan/10 bg-cyan/[0.02]">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-2 h-2 rounded-full bg-cyan animate-pulse" />
+            <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-cyan font-semibold">Visio Intel Integration</span>
+          </div>
+          <p className="text-xs text-muted-foreground mb-3">
+            Market signals, news sentiment, procurement data, and entity scores from Visio Intel&apos;s 100K+ entity database.
+            Feeds: company registry, government tenders (OCDS), market signals, news with sentiment analysis, ESG scores.
+          </p>
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">
+            {[
+              { label: 'Entities', value: '100K+' },
+              { label: 'Signals', value: '50K+' },
+              { label: 'News Articles', value: '100K+' },
+              { label: 'Tenders', value: '10K+' },
+              { label: 'Sync', value: '12h cadence' },
+            ].map((s) => (
+              <div key={s.label} className="p-2 rounded-sm bg-void/50 border border-cyan/[0.06] text-center">
+                <p className="font-mono text-sm font-bold text-cyan">{s.value}</p>
+                <p className="text-[8px] font-mono text-muted-foreground uppercase">{s.label}</p>
+              </div>
+            ))}
+          </div>
+          <div className="flex items-center gap-2 mt-3">
+            <span className="text-[8px] font-mono text-muted-foreground">API: /api/intel/feed | /api/intel/status</span>
+            <span className="text-[8px] font-mono text-cyan ml-auto">Powered by Visio Intel (zgsgfghyreaptbpvlhdx)</span>
+          </div>
+        </section>
+
         {/* Links */}
         <div className="flex items-center justify-center gap-6 mt-10 pt-6 border-t border-spice/[0.06]">
           <Link href="/briefing" className="text-[10px] font-mono text-spice-dim hover:text-spice flex items-center gap-1">
