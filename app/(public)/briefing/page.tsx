@@ -53,19 +53,35 @@ export default function BriefingPage() {
         </div>
 
         {/* Week Stats */}
-        <div className="grid grid-cols-4 gap-3 mb-8">
+        <div className="grid grid-cols-3 sm:grid-cols-6 gap-2 mb-8">
           {[
-            { label: 'Models Released', value: briefing.stats.models_released },
-            { label: 'Funding Total', value: briefing.stats.funding_total },
-            { label: 'Entities Moved', value: briefing.stats.entities_moved },
-            { label: 'New Entries', value: briefing.stats.new_entries },
+            { label: 'Models', value: briefing.stats.models_released },
+            { label: 'Funding', value: briefing.stats.funding_total },
+            { label: 'Moved', value: briefing.stats.entities_moved },
+            { label: 'New', value: briefing.stats.new_entries },
+            { label: 'ArXiv Papers', value: briefing.stats.arxiv_papers.toLocaleString() },
+            { label: 'GH Trending', value: briefing.stats.github_trending },
           ].map((stat) => (
-            <div key={stat.label} className="p-3 rounded-sm border border-spice/[0.06] text-center">
-              <p className="font-mono text-lg font-bold text-spice">{stat.value}</p>
-              <p className="text-[9px] font-mono text-muted-foreground uppercase tracking-wider">{stat.label}</p>
+            <div key={stat.label} className="p-2.5 rounded-sm border border-spice/[0.06] text-center">
+              <p className="font-mono text-base font-bold text-spice">{stat.value}</p>
+              <p className="text-[8px] font-mono text-muted-foreground uppercase tracking-wider">{stat.label}</p>
             </div>
           ))}
         </div>
+
+        {/* Chairman's Signal */}
+        <section className="mb-8 p-5 rounded-sm bg-spice/[0.03] border border-spice/10 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-spice/40 to-transparent" />
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-spice font-semibold">Chairman&apos;s Signal</span>
+          </div>
+          <h3 className="font-heading font-bold text-lg text-foreground leading-snug mb-3">
+            {briefing.chairmans_signal.headline}
+          </h3>
+          <p className="text-sm text-foreground/80 leading-relaxed">
+            {briefing.chairmans_signal.body}
+          </p>
+        </section>
 
         {/* Executive Summary */}
         <section className="mb-10 p-5 rounded-sm shield-border bg-surface/30">
@@ -142,6 +158,33 @@ export default function BriefingPage() {
             </div>
           </section>
         ))}
+
+        {/* Contrarian Corner */}
+        <section className="mb-8 p-5 rounded-sm border border-rank-new/10 bg-rank-new/[0.02]">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="text-[9px] font-mono uppercase tracking-[0.2em] text-rank-new font-semibold">Contrarian Corner</span>
+            <span className="text-[9px] text-muted-foreground font-mono">— The take nobody wants to hear</span>
+          </div>
+          <h3 className="font-heading font-bold text-base text-foreground leading-snug mb-2">
+            {briefing.contrarian_corner.headline}
+          </h3>
+          <p className="text-xs text-foreground/70 leading-relaxed">
+            {briefing.contrarian_corner.body}
+          </p>
+        </section>
+
+        {/* Week Ahead */}
+        <section className="mb-8 p-5 rounded-sm border border-spice/[0.06]">
+          <h2 className="text-[10px] font-mono uppercase tracking-[0.2em] text-spice mb-4">Week Ahead</h2>
+          <ul className="space-y-2">
+            {briefing.week_ahead.map((item, i) => (
+              <li key={i} className="flex gap-3">
+                <span className="text-spice-dim font-mono text-xs shrink-0">→</span>
+                <p className="text-xs text-foreground/80 leading-relaxed">{item}</p>
+              </li>
+            ))}
+          </ul>
+        </section>
 
         {/* The Visio Verdict */}
         <section className="p-6 rounded-sm shield-border bg-spice/[0.02] mb-10">

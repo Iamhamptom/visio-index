@@ -41,6 +41,15 @@ export interface WeeklyBriefing {
   title: string;
   executive_summary: string[];
   sections: BriefingSection[];
+  chairmans_signal: {
+    headline: string;
+    body: string;
+  };
+  contrarian_corner: {
+    headline: string;
+    body: string;
+  };
+  week_ahead: string[];
   verdict: {
     title: string;
     body: string;
@@ -51,6 +60,8 @@ export interface WeeklyBriefing {
     funding_total: string;
     entities_moved: number;
     new_entries: number;
+    arxiv_papers: number;
+    github_trending: number;
   };
 }
 
@@ -60,6 +71,21 @@ export const currentBriefing: WeeklyBriefing = {
   week_start: '2026-03-10',
   week_end: '2026-03-16',
   title: 'The $840B Week',
+  chairmans_signal: {
+    headline: 'The valuation numbers have lost meaning. The product numbers haven\'t.',
+    body: 'OpenAI at $840B and Anthropic at $380B are disconnected from any reasonable revenue multiple. But Claude Opus 4.6 holding #1 on Arena, Cursor doubling ARR in 3 months, and OpenEvidence hitting 1M doctor consults in a day — those are real. The market is pricing in AGI timelines, but the products that are actually winning are winning on execution. When the correction comes — and it will — the companies with real usage (Anthropic, Cursor, Midjourney, Perplexity) will survive. The ones running on narrative alone won\'t. Watch the product metrics, not the funding announcements.',
+  },
+  contrarian_corner: {
+    headline: 'Open-source AI is winning the war but losing the battle that matters',
+    body: 'Llama 4 hit 1B downloads. DeepSeek V3 trained for $5.6M. Everyone declares open-source is winning. But here\'s what nobody says: the best developer tool is Cursor ($29.3B, closed-source). The best agent is Claude Code (closed-source). The best creative tool is Midjourney (closed-source, no VC). The best enterprise AI is Claude ($19B ARR, closed-source API). Open-source models are the foundation layer — but every product built on top of them that actually makes money is closed-source. Open-source is winning the model war while closed-source is winning the product war. That\'s the battle that pays salaries.',
+  },
+  week_ahead: [
+    'NVIDIA GTC 2026 continues March 17-19 — watch for Rubin GPU pricing, availability dates, and developer tools.',
+    'DeepSeek V4 launch could happen any day — ~1T params, natively multimodal. If benchmarks match leaks, it reshapes the open-source landscape.',
+    'EU AI Act SMB compliance subsidies open — first wave of applications expected.',
+    'Apple iOS 26.4 expected with reimagined Siri powered by Gemini. First real Apple AI product for consumers.',
+    'Anthropic Claude Partner Network early access begins — enterprise integrations going live.',
+  ],
   executive_summary: [
     'OpenAI closed $110B at $840B valuation — largest private venture round in history. IPO target: $1T.',
     'Claude Opus 4.6 holds #1 on LMSYS Arena (1504 Elo) as GPT-5.4 ships with native computer use.',
@@ -334,6 +360,8 @@ export const currentBriefing: WeeklyBriefing = {
     funding_total: '$142B+',
     entities_moved: 15,
     new_entries: 4,
+    arxiv_papers: 2847,
+    github_trending: 23,
   },
 };
 
