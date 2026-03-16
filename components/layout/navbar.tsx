@@ -8,9 +8,9 @@ import { useState } from 'react';
 import { Search } from './search';
 
 const navLinks = [
+  { href: '/live', label: 'Live' },
   { href: '/briefing', label: 'Briefing' },
   { href: '/charts', label: 'Charts' },
-  { href: '/insights', label: 'Insights' },
   { href: '/explore', label: 'Explore' },
   { href: '/culture', label: 'Culture' },
   { href: '/compare', label: 'Compare' },
