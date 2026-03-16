@@ -41,6 +41,11 @@ export const healthcareScores: ScoredRanking[] = [
   { slug: 'openai', composite: 85.8, scores: { clinical_impact: 78, adoption: 95, research: 85, regulatory: 72, funding: 98 }, history: [83.0, 84.0, 85.0, 85.8] },
   { slug: 'nvidia', composite: 82.3, scores: { clinical_impact: 70, adoption: 88, research: 82, regulatory: 75, funding: 95 }, history: [81.0, 81.5, 82.0, 82.3] },
   { slug: 'anthropic', composite: 79.5, scores: { clinical_impact: 72, adoption: 78, research: 88, regulatory: 82, funding: 85 }, history: [76.0, 77.5, 78.5, 79.5] },
+  { slug: 'tempus-ai', composite: 90.2, scores: { clinical_impact: 95, adoption: 92, research: 85, regulatory: 88, funding: 92 }, history: [87.0, 88.5, 89.5, 90.2] },
+  { slug: 'recursion', composite: 82.8, scores: { clinical_impact: 78, adoption: 72, research: 92, regulatory: 80, funding: 88 }, history: [80.0, 81.0, 82.0, 82.8] },
+  { slug: 'viz-ai', composite: 80.5, scores: { clinical_impact: 88, adoption: 78, research: 72, regulatory: 82, funding: 78 }, history: [78.0, 79.0, 79.8, 80.5] },
+  { slug: 'pathai', composite: 78.2, scores: { clinical_impact: 85, adoption: 68, research: 82, regulatory: 78, funding: 72 }, history: [76.0, 77.0, 77.8, 78.2] },
+  { slug: 'intron-health', composite: 74.5, scores: { clinical_impact: 82, adoption: 60, research: 78, regulatory: 70, funding: 55 }, history: [70.0, 72.0, 73.5, 74.5] },
 ];
 
 // ── AI IN FINANCE SCORES ────────────────────────────────────────────────
@@ -50,6 +55,9 @@ export const financeScores: ScoredRanking[] = [
   { slug: 'harvey-ai', composite: 84.2, scores: { market_impact: 85, adoption: 78, technology: 85, revenue: 82, innovation: 88 }, history: [78.0, 80.5, 82.5, 84.2] },
   { slug: 'glean', composite: 82.8, scores: { market_impact: 80, adoption: 88, technology: 82, revenue: 85, innovation: 72 }, history: [79.0, 80.5, 81.8, 82.8] },
   { slug: 'openai', composite: 80.5, scores: { market_impact: 88, adoption: 82, technology: 78, revenue: 75, innovation: 78 }, history: [78.0, 79.0, 79.8, 80.5] },
+  { slug: 'ramp', composite: 88.5, scores: { market_impact: 90, adoption: 88, technology: 85, revenue: 92, innovation: 82 }, history: [84.0, 85.8, 87.2, 88.5] },
+  { slug: 'stripe-ai', composite: 87.2, scores: { market_impact: 92, adoption: 90, technology: 88, revenue: 85, innovation: 78 }, history: [85.0, 86.0, 86.8, 87.2] },
+  { slug: 'upstart', composite: 76.8, scores: { market_impact: 72, adoption: 75, technology: 82, revenue: 78, innovation: 72 }, history: [75.0, 75.8, 76.3, 76.8] },
 ];
 
 // ── AI IN MUSIC SCORES ──────────────────────────────────────────────────
@@ -58,6 +66,9 @@ export const musicScores: ScoredRanking[] = [
   { slug: 'elevenlabs', composite: 88.2, scores: { output_quality: 95, adoption: 85, cultural_impact: 82, innovation: 88, accessibility: 78 }, history: [85.0, 86.5, 87.5, 88.2] },
   { slug: 'midjourney-app', composite: 78.5, scores: { output_quality: 92, adoption: 78, cultural_impact: 72, innovation: 70, accessibility: 65 }, history: [76.0, 77.0, 78.0, 78.5] },
   { slug: 'canva-ai', composite: 72.3, scores: { output_quality: 55, adoption: 92, cultural_impact: 65, innovation: 60, accessibility: 95 }, history: [70.0, 71.0, 71.8, 72.3] },
+  { slug: 'udio', composite: 86.8, scores: { output_quality: 90, adoption: 78, cultural_impact: 85, innovation: 88, accessibility: 82 }, history: [80.0, 83.0, 85.0, 86.8] },
+  { slug: 'aiva', composite: 75.2, scores: { output_quality: 82, adoption: 65, cultural_impact: 62, innovation: 78, accessibility: 85 }, history: [73.0, 74.0, 74.8, 75.2] },
+  { slug: 'boomy', composite: 74.5, scores: { output_quality: 55, adoption: 88, cultural_impact: 80, innovation: 62, accessibility: 95 }, history: [71.0, 72.5, 73.5, 74.5] },
 ];
 
 // ── TOP AI AGENTS SCORES ────────────────────────────────────────────────
@@ -72,6 +83,9 @@ export const agentScores: ScoredRanking[] = [
   { slug: 'lovable', composite: 73.8, scores: { capability: 70, reliability: 68, adoption: 72, versatility: 78, developer_experience: 85 }, history: [69.0, 71.0, 72.5, 73.8] },
   { slug: 'zapier-ai', composite: 72.1, scores: { capability: 65, reliability: 82, adoption: 85, versatility: 68, developer_experience: 58 }, history: [70.0, 70.8, 71.5, 72.1] },
   { slug: 'lindy-ai', composite: 70.5, scores: { capability: 72, reliability: 65, adoption: 55, versatility: 80, developer_experience: 75 }, history: [66.0, 68.0, 69.5, 70.5] },
+  { slug: 'sierra-ai', composite: 82.2, scores: { capability: 82, reliability: 85, adoption: 78, versatility: 80, developer_experience: 78 }, history: [76.0, 78.5, 80.5, 82.2] },
+  { slug: 'crewai', composite: 79.8, scores: { capability: 78, reliability: 75, adoption: 85, versatility: 82, developer_experience: 80 }, history: [74.0, 76.0, 78.0, 79.8] },
+  { slug: 'manus', composite: 77.5, scores: { capability: 85, reliability: 62, adoption: 68, versatility: 88, developer_experience: 72 }, history: [0, 65.0, 72.0, 77.5] },
 ];
 
 // ── AI HARDWARE SCORES ──────────────────────────────────────────────────
@@ -82,4 +96,6 @@ export const hardwareScores: ScoredRanking[] = [
   { slug: 'coreweave', composite: 79.2, scores: { performance: 82, market_share: 72, innovation: 70, ecosystem: 85, efficiency: 78 }, history: [74.0, 76.0, 77.8, 79.2] },
   { slug: 'together-ai', composite: 76.5, scores: { performance: 78, market_share: 55, innovation: 82, ecosystem: 80, efficiency: 85 }, history: [72.0, 73.8, 75.2, 76.5] },
   { slug: 'lambda', composite: 74.8, scores: { performance: 75, market_share: 58, innovation: 72, ecosystem: 78, efficiency: 80 }, history: [72.0, 73.0, 74.0, 74.8] },
+  { slug: 'tenstorrent', composite: 78.5, scores: { performance: 82, market_share: 42, innovation: 92, ecosystem: 55, efficiency: 85 }, history: [72.0, 74.5, 76.5, 78.5] },
+  { slug: 'amd-ai', composite: 77.2, scores: { performance: 85, market_share: 72, innovation: 75, ecosystem: 70, efficiency: 72 }, history: [75.0, 76.0, 76.8, 77.2] },
 ];

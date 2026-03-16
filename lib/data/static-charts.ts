@@ -21,6 +21,7 @@ function makeId(prefix: string, i: number) {
 }
 
 import { allExpansionEntities } from './seed-expansion';
+import { allWave2Entities } from './seed-wave2';
 import {
   expandedChartDefs, ceoScores, scientistScores, teamScores,
   communityScores, campaignScores,
@@ -31,7 +32,7 @@ import {
 } from './industry-charts';
 
 // ── Entities ────────────────────────────────────────────────────────────
-const allEntityData = [...labEntities, ...modelEntities, ...toolEntities, ...creatorEntities, ...allExpansionEntities];
+const allEntityData = [...labEntities, ...modelEntities, ...toolEntities, ...creatorEntities, ...allExpansionEntities, ...allWave2Entities];
 export const staticEntities: Entity[] = allEntityData.map((e, i) => ({
   ...e,
   id: makeId('entity', i),
