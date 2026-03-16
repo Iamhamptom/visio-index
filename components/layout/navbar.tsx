@@ -11,10 +11,9 @@ const navLinks = [
   { href: '/live', label: 'Live' },
   { href: '/briefing', label: 'Briefing' },
   { href: '/charts', label: 'Charts' },
+  { href: '/benchmarks', label: 'Benchmarks' },
   { href: '/explore', label: 'Explore' },
   { href: '/culture', label: 'Culture' },
-  { href: '/compare', label: 'Compare' },
-  { href: '/methodology', label: 'Method' },
 ];
 
 export function Navbar() {
