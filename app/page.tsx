@@ -12,6 +12,8 @@ import {
   getScoreHistory, staticEntities, CHART_WEEKS,
 } from '@/lib/data/static-charts';
 import { getMovementNote } from '@/lib/data/chart-notes';
+import { getLatestInsights } from '@/lib/data/insights';
+import { InsightCard } from '@/components/insights/insight-card';
 import Link from 'next/link';
 import { ChevronRight, BarChart3, Brain, Globe, Shield, Users, TrendingUp, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -287,6 +289,23 @@ export default function HomePage() {
                 </Link>
               );
             })}
+          </div>
+        </section>
+
+        {/* ── LIVE INSIGHTS ── The editorial layer */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 py-10 border-t border-spice/[0.06]">
+          <div className="flex items-center gap-3 mb-5">
+            <Brain className="h-4 w-4 text-spice" />
+            <h2 className="text-[10px] font-mono uppercase tracking-[0.2em] text-spice">Live Insights</h2>
+            <div className="flex-1 h-px bg-spice/[0.06]" />
+            <Link href="/insights" className="text-[10px] font-mono uppercase tracking-wider text-spice-dim hover:text-spice flex items-center gap-1">
+              All Insights <ChevronRight className="h-3 w-3" />
+            </Link>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 stagger-children">
+            {getLatestInsights(4).map((insight) => (
+              <InsightCard key={insight.id} insight={insight} compact />
+            ))}
           </div>
         </section>
 

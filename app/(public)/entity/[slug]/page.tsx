@@ -10,6 +10,8 @@ import { GenerationalChart } from '@/components/culture/generational-chart';
 import { ImpactView } from '@/components/culture/impact-view';
 import { MentatAnalysis } from '@/components/holo/mentat-analysis';
 import { getEthicsProfile, getGenerationalData, getImpactMap } from '@/lib/data/culture';
+import { getInsightsForEntity } from '@/lib/data/insights';
+import { InsightCard } from '@/components/insights/insight-card';
 import { getRankDelta, formatScore } from '@/lib/scoring/engine';
 import { notFound } from 'next/navigation';
 import { Globe, MapPin, Tag, ExternalLink, BarChart3, TrendingUp } from 'lucide-react';
@@ -44,6 +46,7 @@ export default async function EntityProfilePage({ params }: Props) {
   const ethicsProfile = getEthicsProfile(slug);
   const genData = getGenerationalData(slug);
   const impactData = getImpactMap(slug);
+  const entityInsights = getInsightsForEntity(slug);
 
   // Find all chart appearances
   const appearances = Object.entries(staticChartEntries).flatMap(([chartSlug, entries]) =>
@@ -203,6 +206,18 @@ export default async function EntityProfilePage({ params }: Props) {
             </section>
           )}
         </div>
+
+        {/* Related Insights */}
+        {entityInsights.length > 0 && (
+          <div className="mb-10">
+            <p className="text-[10px] font-mono uppercase tracking-[0.2em] text-spice mb-3">Related Insights</p>
+            <div className="space-y-3">
+              {entityInsights.slice(0, 3).map((insight) => (
+                <InsightCard key={insight.id} insight={insight} compact />
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Mentat AI Analysis */}
         <div className="mb-10">
