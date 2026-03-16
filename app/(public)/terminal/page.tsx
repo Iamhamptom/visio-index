@@ -16,7 +16,7 @@ async function getTerminalData() {
   if (!url || !key) return null;
   const client = createClient(url, key);
 
-  const [companies, signals, tenders, industries, benchmarks, pricing, news] = await Promise.all([
+  const [companies, signals, tenders, industries, benchmarks, pricing, news, aiEntities] = await Promise.all([
     client.from('legal_entities').select('id, legal_name, province, overall_score, intent_score, spend_potential, industry:industries(name)').gt('overall_score', 60).order('overall_score', { ascending: false }).limit(20),
     client.from('market_signals').select('title, signal_type, signal_strength, detected_at, source_system').order('detected_at', { ascending: false }).limit(15),
     client.from('procurement_releases').select('tender_title, buyer_name, tender_value_zar, tender_province, tender_status').eq('tender_status', 'active').order('tender_value_zar', { ascending: false }).limit(8),
@@ -24,6 +24,7 @@ async function getTerminalData() {
     client.from('ai_benchmarks').select('model_name, lab, benchmark_name, score, score_unit, rank_in_benchmark').order('score', { ascending: false }).limit(30),
     client.from('ai_pricing').select('model_name, lab, input_price_per_mtok, output_price_per_mtok, context_window, tier').order('input_price_per_mtok', { ascending: true }).limit(10),
     client.from('news_articles').select('title, source_name, published_at, sentiment_score, sentiment_label, category').order('published_at', { ascending: false }).limit(10),
+    client.from('index_entities').select('name, slug, entity_type, category, composite_score, score_breakdown, chart_appearances, country, description, metadata').not('composite_score', 'is', null).order('composite_score', { ascending: false }).limit(30),
   ]);
 
   // Get web presences for tech stack info
@@ -53,6 +54,7 @@ async function getTerminalData() {
     benchmarkGroups,
     pricing: pricing.data ?? [],
     news: news.data ?? [],
+    aiEntities: aiEntities.data ?? [],
     counts: {
       signals: signals.data?.length ?? 0,
       companies: enrichedCompanies.length,
@@ -91,6 +93,37 @@ export default async function TerminalPage() {
             <span>{data.counts.benchmarks} benchmarks</span>
             <span>{data.counts.news} news</span>
           </div>
+        </div>
+
+        {/* ═══ TOP STRIP: AI Entity Rankings (full width) ═══ */}
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 mb-4">
+          {(data.aiEntities as Record<string, unknown>[]).slice(0, 12).map((entity, i) => {
+            const charts = (entity.chart_appearances as { chart: string; rank: number; score: number }[]) ?? [];
+            const bestChart = charts.sort((a, b) => a.rank - b.rank)[0];
+            return (
+              <a key={i} href={`/entity/${entity.slug}`} className={cn(
+                'p-2.5 rounded-sm border holo-interactive',
+                i < 3 ? 'border-spice/15 bg-spice/[0.02]' : 'border-spice/[0.06]'
+              )}>
+                <div className="flex items-center justify-between mb-1">
+                  <span className="text-[8px] font-mono uppercase text-spice-dim">{entity.entity_type as string}</span>
+                  {entity.composite_score != null && (
+                    <span className={cn('font-mono text-xs font-bold', i === 0 ? 'holo-number' : 'text-spice')}>
+                      {Number(entity.composite_score).toFixed(1)}
+                    </span>
+                  )}
+                </div>
+                <p className="text-[11px] font-medium text-foreground truncate">{entity.name as string}</p>
+                <p className="text-[9px] text-muted-foreground truncate">{entity.category as string}</p>
+                {bestChart && (
+                  <div className="flex items-center gap-1 mt-1">
+                    <span className="text-[8px] font-mono text-spice">#{bestChart.rank}</span>
+                    <span className="text-[7px] text-muted-foreground truncate">{bestChart.chart.replace(/-/g, ' ')}</span>
+                  </div>
+                )}
+              </a>
+            );
+          })}
         </div>
 
         {/* 4-PANEL GRID — Bloomberg style */}
