@@ -25,6 +25,10 @@ import {
   expandedChartDefs, ceoScores, scientistScores, teamScores,
   communityScores, campaignScores,
 } from './expanded-charts';
+import {
+  industryChartDefs, healthcareScores, financeScores, musicScores,
+  agentScores, hardwareScores,
+} from './industry-charts';
 
 // ── Entities ────────────────────────────────────────────────────────────
 const allEntityData = [...labEntities, ...modelEntities, ...toolEntities, ...creatorEntities, ...allExpansionEntities];
@@ -38,7 +42,7 @@ export const staticEntities: Entity[] = allEntityData.map((e, i) => ({
 const entityBySlug = new Map(staticEntities.map((e) => [e.slug, e]));
 
 // ── Charts ──────────────────────────────────────────────────────────────
-const allChartDefs = [...chartDefinitions, ...expandedChartDefs];
+const allChartDefs = [...chartDefinitions, ...expandedChartDefs, ...industryChartDefs];
 export const staticCharts: Chart[] = allChartDefs.map((c, i) => ({
   ...c,
   id: makeId('chart', i),
@@ -130,6 +134,12 @@ export const staticChartEntries: Record<string, ChartEntry[]> = {
   'top-teams': buildFromScores('top-teams', teamScores),
   'top-communities': buildFromScores('top-communities', communityScores),
   'top-campaigns': buildFromScores('top-campaigns', campaignScores),
+  // Industry charts
+  'ai-healthcare': buildFromScores('ai-healthcare', healthcareScores),
+  'ai-finance': buildFromScores('ai-finance', financeScores),
+  'ai-music': buildFromScores('ai-music', musicScores),
+  'top-agents': buildFromScores('top-agents', agentScores),
+  'ai-hardware': buildFromScores('ai-hardware', hardwareScores),
 };
 
 // ── Historical data (4 weeks per chart) ─────────────────────────────────
@@ -177,7 +187,7 @@ export const chartHistory: Record<string, WeeklySnapshot[]> = {
 };
 
 // ── Score breakdown data (for radar charts, entity profiles) ────────────
-const allScoreData = [...labScores, ...modelScores, ...toolScores, ...creatorScores, ...codeAIScores, ...creativeAIScores, ...openSourceScores, ...ceoScores, ...scientistScores, ...teamScores, ...communityScores, ...campaignScores];
+const allScoreData = [...labScores, ...modelScores, ...toolScores, ...creatorScores, ...codeAIScores, ...creativeAIScores, ...openSourceScores, ...ceoScores, ...scientistScores, ...teamScores, ...communityScores, ...campaignScores, ...healthcareScores, ...financeScores, ...musicScores, ...agentScores, ...hardwareScores];
 const scoreBySlug = new Map<string, ScoredRanking>();
 for (const s of allScoreData) {
   if (!scoreBySlug.has(s.slug)) {

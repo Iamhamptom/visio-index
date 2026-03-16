@@ -97,6 +97,20 @@ export const chartDesignations: Record<string, ChartDesignation[]> = {
     { slug: 'deepseek', badge: 'breakthrough', label: '$0 BUDGET, $600B IMPACT' },
     { slug: 'claude-code', badge: 'biggest_gainer', label: 'ORGANIC VIRAL' },
   ],
+  'top-agents': [
+    { slug: 'claude-code', badge: 'longest_run', label: '#1 AGENT' },
+    { slug: 'codex-cli', badge: 'hot_shot_debut', label: 'HOT SHOT DEBUT' },
+  ],
+  'ai-healthcare': [
+    { slug: 'hippocratic-ai', badge: 'breakthrough', label: 'BREAKTHROUGH' },
+  ],
+  'ai-hardware': [
+    { slug: 'nvidia', badge: 'longest_run', label: 'UNTOUCHABLE' },
+    { slug: 'groq', badge: 'biggest_gainer', label: 'FASTEST INFERENCE' },
+  ],
+  'ai-music': [
+    { slug: 'suno', badge: 'biggest_gainer', label: '12M USERS' },
+  ],
 };
 
 export function getMovementNote(slug: string): string | undefined {
